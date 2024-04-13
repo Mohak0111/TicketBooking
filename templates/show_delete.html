@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+  <title>Document</title>
+  <style>
+    body {
+      background-color: #404258;
+    }
+
+
+    #heading {
+      margin-top: 3%;
+    }
+  </style>
+</head>
+
+<body class="text-white">
+  <nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">ticket</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+        aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+        aria-labelledby="offcanvasDarkNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Admin menu</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/admin">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Manage Venues <i class="bi bi-geo-alt-fill"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="/venue_create">Create Venue</a></li>
+                <li><a class="dropdown-item" href="/venue_edit">Edit Venue</a></li>
+                <li><a class="dropdown-item" href="/venue_delete">Delete Venue</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Manage Shows <i class="bi bi-film"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="/show_create">Create Show</a></li>
+                <li><a class="dropdown-item" href="/show_edit">Edit Show</a></li>
+                <li><a class="dropdown-item active" href="/show_delete">Delete Show</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/admin_summary">Summary</a>
+            </li>
+            <a href="/log_out" class="btn btn-outline-danger position-absolute bottom-0 end-0">Log Out</a>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="p-4">
+    <div class="container" id="heading">
+      <h1 class="text-shadow-lg">Delete Show</h1>
+    </div>
+    {%if shows%}
+    <div class="container d-flex flex-row flex-wrap justify-content-evenly">
+      {%for show in shows%}
+        <form class="flex-fill flex-shrink-0" method="POST">
+          <div class="card text-bg-secondary p-5">
+            <h1 class="card-title text-center bg-dark p-2 rounded">{{show.show_name}}</h1>
+            <div class="card-body text-light text-center">
+              <table>
+                <div class="row">
+                  <div class="col"><h3 class="text-right">rating: </h3></div>
+                  <div class="col"><h3 class="text-left"><span class="text-dark">{{show.show_rating}}</span></h3></div>
+                </div>
+                <div class="row">
+                  <div class="col"><h3 class="text-right">tags:</h3></div>
+                  <div class="col"><h3 class="text-left">
+                    {%for tag in show.show_tags%}
+                      <span class="text-dark">{{tag.tag_name}}</span>{{", " if not loop.last else ""}} 
+                    {%endfor%}
+                  </h3></div>
+                </div>
+                <div class="row">
+                  <div class="col"><h3 class="text-right">venues:</h3></div>
+                  <div class="col"><h3 class="text-left">
+                    {%for ven in show.show_vens%}
+                      <span class="text-dark">{{ven.venue_name}}</span>{{", " if not loop.last else ""}} 
+                    {%endfor%}
+                  </h3></div>
+                </div>
+              </table>
+            <button type="button" class="btn btn-md btn-danger w-25 mx-auto mt-5" onclick="toggle_hidden('confirmation_box{{show.show_id}}')"><i class="bi bi-trash-fill"></i></button>
+            <div id="confirmation_box{{show.show_id}}" hidden class="mx-auto bg-dark p-3 rounded my-2">
+              <h1 class="text-center">Confirm?</h1>
+              <button type="button" class="btn btn-lg btn-success mx-5" onclick="toggle_hidden('confirmation_box{{show.show_id}}')">Cancel</button>
+              <button class="btn btn-lg btn-danger mx-5" type="submit" value="{{show.show_id}}" name="show_id">Delete</button>
+            </div>
+            </div>
+          </div>
+        </form>
+      {%endfor%}
+    </div>
+    {%else%}
+    <p class="text-danger">No shows exist</p>
+    {%endif%}
+  </div>
+  <script>
+    function toggle_hidden(elem_id) {
+      elem=document.getElementById(elem_id)
+      if(elem.hasAttribute("hidden")){
+        elem.removeAttribute("hidden")
+      }
+      else{
+        elem.setAttribute("hidden","")
+      }
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

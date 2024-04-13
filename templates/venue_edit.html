@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+  <title>Document</title>
+  <style>
+    body {
+      background-color: #404258;
+    }
+
+
+    #heading {
+      margin-top: 3%;
+    }
+  </style>
+</head>
+
+<body class="text-white">
+  <nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">ticket</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+        aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+        aria-labelledby="offcanvasDarkNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Admin menu</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/admin">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Manage Venues <i class="bi bi-geo-alt-fill"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="/venue_create">Create Venue</a></li>
+                <li><a class="dropdown-item active" href="/venue_edit">Edit Venue</a></li>
+                <li><a class="dropdown-item" href="/venue_delete">Delete Venue</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Manage Shows <i class="bi bi-film"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="/show_create">Create Show</a></li>
+                <li><a class="dropdown-item" href="/show_edit">Edit Show</a></li>
+                <li><a class="dropdown-item" href="/show_delete">Delete Show</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/admin_summary">Summary</a>
+            </li>
+            <a href="/log_out" class="btn btn-outline-danger position-absolute bottom-0 end-0">Log Out</a>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="p-4">
+    <div class="container" id="heading">
+      <h1 class="text-shadow-lg">Edit Venue</h1>
+    </div>
+    {%if venues%}
+    <div class="container d-flex flex-row flex-wrap justify-content-center">
+      {%for venue in venues%}
+      <form method="POST" class="mx-3 flex-fill">
+        <div class="card text-bg-secondary p-3 rounded-4 flex-shrink-0 my-5 w-100">
+          <input type="text" name="venue_name" value="{{venue.venue_name}}" class="form-control p-1 mt-2 text-center bg-primary text-light fs-2">
+          <p class="fs-4 p-1">location: <input class="bg-dark text-light form-control" type="text" name="venue_location" value="{{venue.venue_location}}"></p>
+          <p class="fs-4 p-1">show capacity:<input class="bg-dark text-light form-control" type="number" name="venue_max_no_of_shows" value="{{venue.venue_max_no_of_shows}}"></p>
+          <p class="fs-4 p-1">seats per show:<input class="bg-dark text-light form-control" type="number" name="venue_max_seats_per_show" value="{{venue.venue_max_seats_per_show}}"></p>
+          <button class="btn btn-lg btn-danger w-25 mx-auto" type="submit" value="{{venue.venue_id}}" name="ven_id" id="{{venue.venue_id}}button"><i class="bi bi-pencil-square"></i> edit</button>
+        </div>
+      </form>
+        {%endfor%}
+    </div>
+    {%else%}
+    <p class="text-danger">No venues exist</p>
+    {%endif%}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

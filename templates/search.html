@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #404258;
+        }
+
+
+
+        .carousel-caption {
+            position: unset;
+        }
+
+        #heading {
+            margin-top: 3%;
+        }
+    </style>
+</head>
+
+<body class="text-white mb-5">
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">ticket</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+                aria-labelledby="offcanvasDarkNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">User menu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/user_dashboard">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/user_bookings">Booked Tickets <i
+                                    class="bi bi-ticket"></i></a>
+                        </li>
+                        <a href="/log_out" class="btn btn-outline-danger position-absolute bottom-0 end-0">Log Out</a>
+                    </ul>
+                    <form class="d-flex mt-3" role="search" action="/search">
+                        <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+                        <button class="btn btn-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="p-4 container text-white" id="heading">
+        <h1>Search</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="bg-dark rounded mx-2 p-2 text-white col" id="">
+                <h1>Venue based</h1>
+                <form action="" method="post" class="p-2">
+                    <input type="text" hidden value="location" name="field">
+                    <label class="form-label" for="location_input">Enter location</label>
+                    <input required class="form-control" type="text" name="location_input" id="location_input" placeholder="enter location">
+                    <button type="submit" class="btn btn-success btn-md p-2 mt-2">search location-wise</button>
+                </form>
+                <form action="" method="post" class="p-2">
+                    <input type="text" hidden value="venue_name" name="field">
+                    <label class="form-label" for="venue_name_input">Enter name</label>
+                    <input required class="form-control" type="text" name="venue_name_input" id="venue_name_input" placeholder="enter venue_name">
+                    <button type="submit" class="btn btn-success btn-md p-2 mt-2">search venue_name-wise</button>
+                </form>
+            </div>
+            <div class="bg-dark rounded mx-2 p-2 text-white col" id="">
+                <h1>Show based</h1>
+                <form action="" method="post" class="p-2">
+                    <input type="text" hidden value="tag" name="field">
+                    <label class="form-label" for="tag_input">Enter tag</label>
+                    <input required class="form-control" type="text" name="tag_input" id="tag_input" placeholder="enter tag">
+                    <button type="submit" class="btn btn-success btn-md p-2 mt-2">search tag-wise</button>
+                </form>
+                <form action="" method="post" class="p-2">
+                    <input type="text" hidden value="show_name" name="field">
+                    <label class="form-label" for="show_name_input">Enter name</label>
+                    <input required class="form-control" type="text" name="show_name_input" id="show_name_input" placeholder="enter show_name">
+                    <button type="submit" class="btn btn-success btn-md p-2 mt-2">search show_name-wise</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {%if venues%}
+      {%for venue in venues%}
+        {%set shows,no_of_shows=venue.ven_shows, venue.ven_shows|length%}
+        <div class="container bg-dark mt-4 p-3 rounded-4">
+          <h1>{{venue.venue_name}} <span class="fs-5 text-secondary">{{venue.venue_location}}</span></h1>
+          {%if no_of_shows>=1%}
+            <div id="carouselExampleCaptions{{venue.venue_id}}" class="carousel carousel-dark slide p-5">
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions{{venue.venue_id}}" data-bs-slide-to="0"
+                  class="active" aria-current="true"></button>
+                {%for i in range(1,no_of_shows)%}
+                  <button type="button" data-bs-target="#carouselExampleCaptions{{venue.venue_id}}"
+                    data-bs-slide-to="{{i}}"></button>
+                {%endfor%}
+
+              </div>
+
+
+
+
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-primary">{{shows[0].show_name}}</h5>
+                    <p>rating: {{shows[0].show_rating}}</p>
+                    <p>tags: {%for tag in shows[0].show_tags%}{{tag.tag_name}}<span class="text-white">{{", " if not loop.last}}</span>{%endfor%}</p>
+                  </div>
+                </div>
+
+                {%for show_iter in range(1,no_of_shows)%}
+                  <div class="carousel-item">
+                    <div class="carousel-caption d-none d-md-block">
+                      <h5 class="text-primary">{{shows[show_iter].show_name}}</h5>
+                      <p>rating: {{shows[show_iter].show_rating}}</p>
+                    <p>tags: {%for tag in shows[show_iter].show_tags%}{{tag.tag_name}}<span class="text-white">{{", " if not loop.last}}</span>{%endfor%}</p>
+
+                    </div>
+                  </div>
+                {%endfor%}
+              </div>
+
+
+
+
+
+
+
+
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions{{venue.venue_id}}"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions{{venue.venue_id}}"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          {%else%}
+            <p class="container bg-dark text-center p-3">No shows exist</p>
+          {%endif%}
+        </div>
+      {%endfor%}
+    {%else%}
+      <p class="text-black p-2">no results</p>
+    {%endif%}
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

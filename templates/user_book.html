@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: #404258;
+    }
+
+
+
+    .carousel-caption {
+      position: unset;
+    }
+
+    #heading {
+      margin-top: 3%;
+    }
+  </style>
+</head>
+
+<body class="text-white">
+  <nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">ticket</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+        aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+        aria-labelledby="offcanvasDarkNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">User menu</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/user_dashboard">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/user_bookings">Booked Tickets <i class="bi bi-ticket"></i></a>
+            </li>
+            <a href="/log_out" class="btn btn-outline-danger position-absolute bottom-0 end-0">Log Out</a>
+          </ul>
+          <form class="d-flex mt-3" role="search" action="/search">
+            <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+            <button class="btn btn-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  <div class="p-4">
+    <div class="container" id="heading">
+      <h3>
+        <span class="text-dark">show/movie name: </span>{{show.show_name}} 
+      <h3>
+        <span class="text-dark">venue/theatre name: </span>{{venue.venue_name}} <sub class="fs-6">{{venue.venue_location}}</sub>
+      </h3>
+    </div>
+    {%if not show.show_housefull_flag%}
+    <form action="" method="post" class="card bg-dark text-white container p-3 w-50 mt-5">
+
+      <div class="p-4 row text-primary">
+        <h4 class="col">
+          <span class="text-secondary">No. of tickets available:</span> {{no_of_tickets_available}}
+        </h4>
+        <h4 class="col">
+          <span class="text-secondary">Price per ticket:</span> <i class="bi bi-currency-rupee"></i>{{show.show_price_per_ticket}}
+        </h4>
+      </div>
+
+      <div class="p-4">
+        <label class="text-secondary" for="no_of_tickets_to_purchase">Enter the number of tickets you want to purchase<sup class="text-danger">*</sup></label>
+        <input onkeyup="calculate_price()" required placeholder="Enter number"
+          class="text-light bg-secondary form-control border-0 rounded-3" type="number" step="1" max="{{no_of_tickets_available}}" min="1" name="no_of_tickets_to_purchase"
+          id="no_of_tickets_to_purchase">
+      </div>
+
+      <div class="p-4">
+        <label class="text-secondary" for="total_price">Total price:</label>
+        <i class="bi bi-currency-rupee"> </i>
+        <input value="0" disabled placeholder="Enter number"
+          class="text-light bg-dark form-control border-0 rounded-3" name="total_price" type="number"
+          id="total_price">
+      </div>
+
+
+      <button type="submit" class="mt-3 btn btn-lg btn-outline-success">create</button>
+    </form>
+    {%else%}
+    <div class="cardbg-dark text-white">
+      <div class="text-danger">Housefull</div>
+    </div>
+    {%endif%}
+  </div>
+
+
+
+  <script>
+    function calculate_price() {
+      tickets_input=document.getElementById('no_of_tickets_to_purchase')
+      total_price_input=document.getElementById('total_price')
+      console.log(parseInt(tickets_input.value))
+      if(!isNaN(parseInt(tickets_input.value)))
+        total_price_input.value=parseInt(tickets_input.value)*parseInt("{{show.show_price_per_ticket}}")
+      else
+        total_price_input.value=0
+    }
+  </script>
+
+
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
