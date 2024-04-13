@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a web application built with Flask and SQLite. It is a simple app that allows an admin to create, edit, and delete theatres(venues) and/or movies(shows) inside a theatre. It also allows a general user to book tickets for the available shows. The app is built with flask APIs.
+This is a web application built with Flask and SQLite. It is a simple app that allows an admin to create, edit, and delete theatres(venues) and/or movies(shows) inside a theatre. It also allows a general user to book tickets for the available shows. The backend of this application is built using Flask APIs.
 >To know more about the project, checkout "report(1).pdf"
 ## Installation
 
