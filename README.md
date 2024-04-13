@@ -1,4 +1,4 @@
-# TicketBooking Application
+# TicketShow Application
 
 ## Introduction
 
